@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import Container from "../components/container";
-import * as RPC from "rage-rpc";
+import rpc from "rage-rpc";
+
 import "./index.css";
 
 // TODO: Fa o componenta pentru Input si Button care sa aibe prestabilite niste teme.
@@ -21,9 +22,9 @@ const Authentication = () => {
         e.preventDefault();
 
         if (authType === "login") {
-            RPC.callServer("brw:checkPlayerCredentials", currentAuthInformationCompleted);
+            rpc.callServer("brw:checkPlayerCredentials", currentAuthInformationCompleted);
         } else {
-            RPC.callServer("brw:createPlayerCredentials", currentAuthInformationCompleted);
+            rpc.callServer("brw:createPlayerCredentials", currentAuthInformationCompleted);
         }
     };
 
