@@ -6,7 +6,6 @@ import { PlayerStore as playerStore } from "./stores/PlayerStore";
 
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
-import "./rpcs";
 import { ToastContainer } from "react-toastify";
 
 const stores = {

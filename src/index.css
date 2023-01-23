@@ -8,3 +8,32 @@
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+/* 
+body {
+    background: rgb(236, 118, 118);
+} */
+
+.direction-rtl {
+    direction: rtl;
+}
+
+.direction-ltr {
+    direction: ltr;
+}
+
+.stroke {
+    text-shadow: 0 0 0.1em black, 0 0 0.1em black, 0 0 0.1em black, 0 0 0.1em black;
+}
+
+.chat-text-container::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+}
+.chat-text-container::-webkit-scrollbar-track {
+    border-radius: 1em;
+    background: transparent;
+}
+.chat-text-container::-webkit-scrollbar-thumb{
+    border-radius: 1em;
+    background: rgba(0,0,0,0.3);
+}
