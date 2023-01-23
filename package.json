@@ -10,16 +10,19 @@
   },
   "dependencies": {
     "clsx": "^1.2.1",
+    "dayjs": "^1.11.7",
+    "lodash": "^4.17.21",
     "mobx": "^6.7.0",
     "mobx-react": "^7.6.0",
     "prettier": "^2.8.3",
-    "rage-rpc": "^0.4.0",
+    "rage-rpc": "github:leonardssh/rage-rpc#build",
     "react": "^18.2.0",
     "react-router-dom": "^6.6.2",
     "react-toastify": "^9.1.1"
   },
   "devDependencies": {
     "@ragempcommunity/types-cef": "^2.1.1",
+    "@types/lodash": "^4.14.191",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@vitejs/plugin-react-swc": "^3.0.0",

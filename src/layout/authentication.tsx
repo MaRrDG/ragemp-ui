@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import Container from "../components/container";
-import rpc from "rage-rpc";
+import * as RPC from "rage-rpc";
 
 import "./index.css";
 
@@ -22,9 +22,9 @@ const Authentication = () => {
         e.preventDefault();
 
         if (authType === "login") {
-            rpc.callServer("brw:checkPlayerCredentials", currentAuthInformationCompleted);
+            RPC.callServer("brw:checkPlayerCredentials", currentAuthInformationCompleted);
         } else {
-            rpc.callServer("brw:createPlayerCredentials", currentAuthInformationCompleted);
+            RPC.callServer("brw:createPlayerCredentials", currentAuthInformationCompleted);
         }
     };
 
