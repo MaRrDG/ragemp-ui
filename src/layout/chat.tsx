@@ -1,7 +1,9 @@
 import dayjs from "dayjs";
 import { inject, observer } from "mobx-react";
-import React, { FC, useEffect, useMemo, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { PlayerStoreIMPL } from "../stores/PlayerStore";
+import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import "./index.css";
 
 type IProps = {
     playerStore?: PlayerStoreIMPL;
@@ -37,8 +39,16 @@ const Chat: FC<IProps> = inject("playerStore")(
                         text: text,
                     },
                 ]);
-                setShowTextInput(false);
-                setCurrentMessage("");
+
+                if (messages.length > 50) {
+                    messages.shift();
+                    setMessages(messages);
+                }
+
+                if (showTextInput) {
+                    setShowTextInput(false);
+                    setCurrentMessage("");
+                }
             },
 
             activate: (toggle: boolean) => {
@@ -82,6 +92,7 @@ const Chat: FC<IProps> = inject("playerStore")(
             // ESC KEY
             if (event.keyCode === 27) {
                 if (showTextInput && showChat) return;
+                inputRef.current = false;
                 setShowTextInput(false);
                 chatInvoke(false);
             }
@@ -112,7 +123,9 @@ const Chat: FC<IProps> = inject("playerStore")(
             <div className="w-[37em] chat text-white font-sans">
                 <div
                     id="chat-container"
-                    className="h-[20em] outline-none overflow-auto break-words flex flex-col gap-2 chat-text-container direction-rtl"
+                    className={`h-[20em] outline-none ${
+                        showTextInput ? "overflow-auto" : "overflow-hidden"
+                    } break-words flex flex-col gap-2 chat-text-container direction-rtl`}
                 >
                     {messages.map((elem, idx) => (
                         <div key={idx} className="flex gap-1 direction-ltr ml-2 stroke">
@@ -126,43 +139,81 @@ const Chat: FC<IProps> = inject("playerStore")(
                     <div ref={divToScroll} />
                 </div>
                 {showTextInput ? (
-                    <div className="w-full relative">
-                        <input
-                            type="text"
-                            name="textMessage"
-                            id="chatInput"
-                            ref={inputRef}
-                            placeholder="Write a message"
-                            className="w-full mt-2 h-10 placeholder:text-white rounded-md bg-black/25 text-white p-4 pr-14 outline-none"
-                            value={currentMessage}
-                            onKeyUp={(event) => {
-                                if (event.keyCode === 13) {
-                                    if (!showTextInput) return;
-                                    event.preventDefault();
+                    <div className="w-full flex flex-col gap-2">
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="textMessage"
+                                id="chatInput"
+                                ref={inputRef}
+                                placeholder="Write a message"
+                                className="w-full mt-2 h-10 break-words placeholder:text-white rounded-md bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 text-white p-4 pr-[5rem] outline-none"
+                                value={currentMessage}
+                                onKeyUp={(event) => {
+                                    if (event.keyCode === 13) {
+                                        if (!showTextInput) return;
+                                        event.preventDefault();
 
-                                    let message = currentMessage.trim();
+                                        let message = currentMessage.trim();
 
-                                    if (message.length < 1) return setShowTextInput(false);
+                                        if (message.length < 1) {
+                                            setShowTextInput(false);
+                                            chatInvoke(false);
+                                            inputRef.current = false;
+                                            return;
+                                        }
 
-                                    if (message[0] == "/") {
-                                        if (message.length < 2) return setShowTextInput(false);
+                                        if (message[0] == "/") {
+                                            if (message.length < 2) {
+                                                setShowTextInput(false);
+                                                chatInvoke(false);
+                                                inputRef.current = false;
+                                                return;
+                                            }
 
-                                        mp.invoke("command", message.substr(1));
-                                    } else {
-                                        mp.invoke("chatMessage", message);
+                                            mp.invoke("command", message.substr(1));
+                                        } else {
+                                            mp.invoke("chatMessage", message);
+                                        }
+
+                                        setShowTextInput(false);
+                                        chatInvoke(false);
+                                        inputRef.current = false;
                                     }
-
-                                    setShowTextInput(false);
-                                    chatInvoke(false);
-                                    inputRef.current = false;
-                                }
-                            }}
-                            onChange={(e) => {
-                                if (e.target.value.length > 120) return;
-                                setCurrentMessage(e.target.value);
-                            }}
-                        />
-                        <p className="absolute right-2 top-4">{currentMessage.length}/120</p>
+                                }}
+                                onChange={(e) => {
+                                    if (e.target.value.length > 160) return;
+                                    setCurrentMessage(e.target.value);
+                                }}
+                            />
+                            <p className="absolute right-2 top-4">{currentMessage.length}/160</p>
+                        </div>
+                        <div className="flex gap-x-1">
+                            <button
+                                type="button"
+                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase flex items-center justify-center h-8 rounded-md"
+                            >
+                                <Cog6ToothIcon className="w-6" />
+                            </button>
+                            <button
+                                type="button"
+                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase font-medium flex items-center justify-center h-8 rounded-md"
+                            >
+                                Normal
+                            </button>
+                            <button
+                                type="button"
+                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase font-medium flex items-center justify-center h-8 rounded-md"
+                            >
+                                Staff
+                            </button>
+                            <button
+                                type="button"
+                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase font-medium flex items-center justify-center h-8 rounded-md"
+                            >
+                                Faction
+                            </button>
+                        </div>
                     </div>
                 ) : null}
             </div>

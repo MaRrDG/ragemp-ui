@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.13",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",
     "lodash": "^4.17.21",
