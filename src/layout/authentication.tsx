@@ -1,181 +1,195 @@
-import React, { FormEvent, useState } from "react";
+import React, { FC, FormEvent, useState } from "react";
 import Container from "../components/container";
 import * as RPC from "rage-rpc";
 
 import "./index.css";
+import Input from "../components/input";
+import Button from "../components/button";
+import { inject, observer } from "mobx-react";
+import { PlayerStoreIMPL } from "../stores/PlayerStore";
+import { toast } from "react-toastify";
 
-// TODO: Fa o componenta pentru Input si Button care sa aibe prestabilite niste teme.
-
-const Authentication = () => {
-    const [authType, setAuthType] = useState<"login" | "register">("login");
-    const [currentAuthInformationCompleted, setCurrentAuthInformationCompleted] = useState<{
-        username: string;
-        email?: string;
-        password: string;
-    }>({
-        email: "",
-        username: "",
-        password: "",
-    });
-
-    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        if (authType === "login") {
-            RPC.callServer("brw:checkPlayerCredentials", currentAuthInformationCompleted);
-        } else {
-            RPC.callServer("brw:createPlayerCredentials", currentAuthInformationCompleted);
-        }
-    };
-
-    return (
-        <div className="z-50 container">
-            <div className="w-full h-full flex items-center justify-center">
-                <Container className="bg-gray-200 border-1 shadow-md rounded-lg p-24 flex flex-col items-center justify-around">
-                    {authType === "login" ? (
-                        <>
-                            <form
-                                onSubmit={(e) => onSubmit(e)}
-                                className="flex flex-col items-center mt-2 space-y-6 mb-6"
-                            >
-                                <h1 className="font-medium text-3xl uppercase">Login</h1>
-                                <input
-                                    type="text"
-                                    value={currentAuthInformationCompleted.username}
-                                    onChange={(e) => {
-                                        setCurrentAuthInformationCompleted((prev) => {
-                                            return {
-                                                ...prev,
-                                                username: e.target.value,
-                                            };
-                                        });
-                                    }}
-                                    placeholder="Username"
-                                    className="w-[22rem] text-white placeholder:text-white h-[3rem] bg-gray-400 rounded-lg p-4"
-                                    required
-                                />
-                                <input
-                                    placeholder="Password"
-                                    value={currentAuthInformationCompleted.password}
-                                    onChange={(e) => {
-                                        setCurrentAuthInformationCompleted((prev) => {
-                                            return {
-                                                ...prev,
-                                                password: e.target.value,
-                                            };
-                                        });
-                                    }}
-                                    type="password"
-                                    className="w-[22rem] text-white placeholder:text-white h-[3rem] bg-gray-400 rounded-lg p-4"
-                                    required
-                                />
-                                <input
-                                    type="submit"
-                                    value="SUBMIT"
-                                    className="w-24 font-medium h-8 bg-gray-300 rounded-lg text-gray-900"
-                                />
-                            </form>
-                            <p className="mt-2 font-medium text-xl">
-                                You don't have an account?{" "}
-                                <span
-                                    aria-hidden="true"
-                                    onClick={() => {
-                                        setAuthType("register");
-                                        setCurrentAuthInformationCompleted({
-                                            email: "",
-                                            username: "",
-                                            password: "",
-                                        });
-                                    }}
-                                    className="text-blue-700 cursor-pointer"
-                                >
-                                    Create one
-                                </span>
-                                .
-                            </p>
-                        </>
-                    ) : (
-                        <>
-                            <form
-                                onSubmit={(e) => onSubmit(e)}
-                                className="flex flex-col items-center mt-2 space-y-6 mb-6"
-                            >
-                                <h1 className="font-medium text-3xl uppercase">Register</h1>
-                                <input
-                                    type="text"
-                                    value={currentAuthInformationCompleted.username}
-                                    onChange={(e) => {
-                                        setCurrentAuthInformationCompleted((prev) => {
-                                            return {
-                                                ...prev,
-                                                username: e.target.value,
-                                            };
-                                        });
-                                    }}
-                                    placeholder="Username"
-                                    className="w-[22rem] h-[3rem] text-white placeholder:text-white bg-gray-400 rounded-lg p-4"
-                                    required
-                                />
-                                <input
-                                    type="email"
-                                    value={currentAuthInformationCompleted.email}
-                                    placeholder="Email"
-                                    onChange={(e) => {
-                                        setCurrentAuthInformationCompleted((prev) => {
-                                            return {
-                                                ...prev,
-                                                email: e.target.value,
-                                            };
-                                        });
-                                    }}
-                                    className="w-[22rem] h-[3rem] text-white placeholder:text-white bg-gray-400 rounded-lg p-4"
-                                    required
-                                />
-                                <input
-                                    value={currentAuthInformationCompleted.password}
-                                    onChange={(e) => {
-                                        setCurrentAuthInformationCompleted((prev) => {
-                                            return {
-                                                ...prev,
-                                                password: e.target.value,
-                                            };
-                                        });
-                                    }}
-                                    placeholder="Password"
-                                    type="password"
-                                    className="w-[22rem] h-[3rem] text-white placeholder:text-white bg-gray-400 rounded-lg p-4"
-                                    required
-                                />
-                                <input
-                                    type="submit"
-                                    value="SUBMIT"
-                                    className="w-24 font-medium h-8 bg-gray-300 rounded-lg text-gray-900"
-                                />
-                            </form>
-                            <p className="mt-2 font-medium text-xl">
-                                You already have an account?{" "}
-                                <span
-                                    aria-hidden="true"
-                                    onClick={() => {
-                                        setAuthType("login");
-                                        setCurrentAuthInformationCompleted({
-                                            email: "",
-                                            username: "",
-                                            password: "",
-                                        });
-                                    }}
-                                    className="text-blue-700 cursor-pointer"
-                                >
-                                    Login to it
-                                </span>
-                                .
-                            </p>
-                        </>
-                    )}
-                </Container>
-            </div>
-        </div>
-    );
+type IProps = {
+    playerStore?: PlayerStoreIMPL;
 };
+
+const Authentication: FC<IProps> = inject("playerStore")(
+    observer(({ playerStore }: IProps) => {
+        const [authType, setAuthType] = useState<"login" | "register">("login");
+        const [currentAuthInformationCompleted, setCurrentAuthInformationCompleted] = useState<{
+            username: string;
+            email?: string;
+            password: string;
+        }>({
+            email: "",
+            username: "",
+            password: "",
+        });
+
+        const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+
+            if (authType === "login") {
+                RPC.callServer("brw:checkPlayerCredentials", currentAuthInformationCompleted);
+            } else {
+                RPC.callServer("brw:createPlayerCredentials", currentAuthInformationCompleted);
+            }
+
+            playerStore?.setShowDisclaimer(true);
+        };
+
+        return (
+            <div className="z-50 container ">
+                <div className="w-full h-full flex items-center justify-center">
+                    <form onSubmit={(e) => onSubmit(e)}>
+                        <Container className="flex flex-col items-center justify-around relative">
+                            {authType === "login" ? (
+                                <>
+                                    <div className="absolute top-0 right-28 w-[30rem] h-auto flex flex-col items-center justify-center z-10">
+                                        <h1 className="font-bayon text-[138px] text-white m-0 p-0">LOGIN</h1>
+                                        <div className="mt-[85px]">
+                                            <Input
+                                                size="xl"
+                                                type="text"
+                                                required
+                                                label="Username"
+                                                value={currentAuthInformationCompleted.username}
+                                                onChange={(e: any) => {
+                                                    setCurrentAuthInformationCompleted({
+                                                        ...currentAuthInformationCompleted,
+                                                        username: e.target.value,
+                                                    });
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="mt-[60px]">
+                                            <Input
+                                                size="xl"
+                                                label="Password"
+                                                required
+                                                type="password"
+                                                secondLabel="Forgot password"
+                                                value={currentAuthInformationCompleted.password}
+                                                onSecondLabelClick={() => {
+                                                    toast.error("This feature is not implemented", {
+                                                        position: "bottom-right",
+                                                        autoClose: 5000,
+                                                        theme: "dark",
+                                                    });
+                                                }}
+                                                onChange={(e: any) => {
+                                                    setCurrentAuthInformationCompleted({
+                                                        ...currentAuthInformationCompleted,
+                                                        password: e.target.value,
+                                                    });
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="mt-[34px] flex items-center justify-center flex-col ">
+                                            <Button size="xl" isSubmit value="Submit" />
+                                            <p
+                                                aria-hidden="true"
+                                                onClick={() => {
+                                                    setAuthType("register");
+                                                }}
+                                                className="mt-[6px] cursor-pointer font-bellota text-[16px] text-white"
+                                            >
+                                                You don’t have an account?
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <img src="/images/login-wave.png" className="absolute z-0" alt="Character" />
+                                    <div className="absolute bottom-[5px] right-2 text-right font-bellota text-white text-[12px]">
+                                        <p>UI VERSION: 0.0.1</p>
+                                        <p>SERVER VERSION: 0.0.1</p>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className="absolute top-0 left-28 w-[30rem] h-auto flex flex-col items-center justify-center z-10">
+                                        <h1 className="font-bayon text-[138px] text-white m-0 p-0">REGISTER</h1>
+                                        <div className="mt-[85px]">
+                                            <Input
+                                                size="xl"
+                                                type="text"
+                                                required
+                                                label="Username"
+                                                value={currentAuthInformationCompleted.username}
+                                                onChange={(e: any) => {
+                                                    setCurrentAuthInformationCompleted({
+                                                        ...currentAuthInformationCompleted,
+                                                        username: e.target.value,
+                                                    });
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="mt-[12px]">
+                                            <Input
+                                                size="xl"
+                                                label="Email:"
+                                                required
+                                                type="email"
+                                                value={currentAuthInformationCompleted.email}
+                                                onChange={(e: any) => {
+                                                    setCurrentAuthInformationCompleted({
+                                                        ...currentAuthInformationCompleted,
+                                                        email: e.target.value,
+                                                    });
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="mt-[12px]">
+                                            <Input
+                                                size="xl"
+                                                label="Password"
+                                                required
+                                                type="password"
+                                                value={currentAuthInformationCompleted.password}
+                                                onChange={(e: any) => {
+                                                    setCurrentAuthInformationCompleted({
+                                                        ...currentAuthInformationCompleted,
+                                                        password: e.target.value,
+                                                    });
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="mt-[34px] flex items-center justify-center flex-col ">
+                                            <Button size="xl" isSubmit value="Submit" />
+                                            <p
+                                                aria-hidden="true"
+                                                onClick={() => {
+                                                    setAuthType("login");
+                                                }}
+                                                className="mt-[6px] cursor-pointer font-bellota text-[16px] text-white"
+                                            >
+                                                You already have an account?
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <img
+                                        src="/images/login-wave-right.png"
+                                        className="absolute right-0 z-0"
+                                        alt="Character"
+                                    />
+                                    <div className="absolute bottom-[5px] left-2 text-left font-bellota text-white text-[12px]">
+                                        <p>UI VERSION: 0.0.1</p>
+                                        <p>SERVER VERSION: 0.0.1</p>
+                                    </div>
+                                </>
+                            )}
+                        </Container>
+                    </form>
+                    {authType === "login" ? (
+                        <img src="/images/gtavgirl.png" className="w-[850px] absolute -left-[6rem] " alt="Character" />
+                    ) : (
+                        <img src="/images/gtavman.png" className="w-[600px] absolute -right-[12rem] " alt="Character" />
+                    )}
+                </div>
+            </div>
+        );
+    })
+);
 
 export default Authentication;

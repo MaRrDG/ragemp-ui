@@ -5,7 +5,12 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        bayon: ['Bayon', "sans-serif"],
+        bellota: ['Bellota Text', "sans-serif"],
+      }
+    },
   },
   plugins: [],
 }

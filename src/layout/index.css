@@ -4,3 +4,34 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.direction-rtl {
+    direction: rtl;
+}
+
+.direction-ltr {
+    direction: ltr;
+}
+
+.stroke {
+    text-shadow: 0 0 0.1em black, 0 0 0.1em black, 0 0 0.1em black, 0 0 0.1em black;
+}
+
+.chat-text-container::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+}
+
+.chat-text-container::-webkit-scrollbar-track {
+    border-radius: 1em;
+    background: transparent;
+}
+
+.chat-text-container::-webkit-scrollbar-thumb{
+    border-radius: 1em;
+    background: #6366f1;
+}
+
+.chat-text-container::-webkit-scrollbar-thumb:hover{
+    background: linear-gradient(180deg, rgba(99,102,241,1) 0%, rgba(67,56,202,1) 100%);
+}
