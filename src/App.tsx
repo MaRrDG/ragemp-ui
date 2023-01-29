@@ -12,41 +12,49 @@ type IProps = {
 
 const App: FC<IProps> = inject("playerStore")(
     observer(({ playerStore }: IProps) => {
-        RPC.on("brw:showAuthentication", (bool: boolean) => {
-            playerStore?.setShowAuthentication(bool);
-        });
+        useEffect(() => {
+            RPC.on("brw:showAuthentication", (bool: boolean) => {
+                playerStore?.setShowAuthentication(bool);
+            });
 
-        RPC.on(
-            "brw:showToast",
-            ({
-                type,
-                message,
-                seconds,
-            }: {
-                type: "error" | "success" | "warning" | "info";
-                message: string;
-                seconds: number;
-            }) => {
-                toast[type](message, {
-                    position: "bottom-right",
-                    autoClose: seconds,
-                    theme: "light",
-                });
-            }
-        );
+            RPC.on(
+                "brw:showToast",
+                ({
+                    type,
+                    message,
+                    seconds,
+                }: {
+                    type: "error" | "success" | "warning" | "info";
+                    message: string;
+                    seconds: number;
+                }) => {
+                    toast[type](message, {
+                        position: "bottom-right",
+                        autoClose: seconds,
+                        theme: "dark",
+                    });
+                }
+            );
 
-        RPC.on("brw:loadPlayerInfos", ({ player }: { player: Player }) => {
-            playerStore?.updatePlayer(player);
-        });
+            RPC.on("brw:loadPlayerInfos", ({ player }: { player: Player }) => {
+                playerStore?.updatePlayer(player);
+            });
+
+            RPC.on("brw:setServerVersion", ({ version }: { version: { serverVersion: string; uiVersion: string } }) => {
+                playerStore?.setVersion(version);
+            });
+        }, [window.mp]);
 
         return (
-            <div className="w-screen h-screen p-2">
+            <div className="w-screen h-screen p-2 relative">
                 {playerStore?.showAuthentication ? <Authentication /> : null}
                 <Chat />
 
-                <div className="fixed right-[40%] text-white bottom-0 text-center">
-                    THIS IS ONLY A PROTOTYPE. ALL THE UI MIGHT BE CHANGED.
-                </div>
+                {playerStore?.showDisclaimer ? (
+                    <div className="fixed right-[40%] text-white bottom-0 text-center">
+                        THIS IS ONLY A PROTOTYPE. ALL THE UI MIGHT BE CHANGED.
+                    </div>
+                ) : null}
             </div>
         );
     })

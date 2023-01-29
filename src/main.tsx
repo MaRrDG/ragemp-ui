@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}
-            closeOnClick={false}
+            closeOnClick
             rtl={false}
             pauseOnFocusLoss={false}
             draggable={false}

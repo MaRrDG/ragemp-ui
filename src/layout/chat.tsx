@@ -44,11 +44,6 @@ const Chat: FC<IProps> = inject("playerStore")(
                     messages.shift();
                     setMessages(messages);
                 }
-
-                if (showTextInput) {
-                    setShowTextInput(false);
-                    setCurrentMessage("");
-                }
             },
 
             activate: (toggle: boolean) => {
@@ -179,6 +174,7 @@ const Chat: FC<IProps> = inject("playerStore")(
                                         setShowTextInput(false);
                                         chatInvoke(false);
                                         inputRef.current = false;
+                                        setCurrentMessage("");
                                     }
                                 }}
                                 onChange={(e) => {
