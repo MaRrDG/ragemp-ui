@@ -5,6 +5,7 @@ import { Player, PlayerStoreIMPL } from "./stores/PlayerStore";
 import { inject, observer } from "mobx-react";
 import Chat from "./layout/chat";
 import { toast } from "react-toastify";
+import clsx from "clsx";
 
 type IProps = {
     playerStore?: PlayerStoreIMPL;
@@ -46,7 +47,12 @@ const App: FC<IProps> = inject("playerStore")(
         }, [window.mp]);
 
         return (
-            <div className="w-screen h-screen p-2 relative">
+            <div
+                className={clsx(
+                    "w-screen h-screen p-2 relative",
+                    !playerStore?.player.isLogged ? "bg-[#080813]/70" : ""
+                )}
+            >
                 {playerStore?.showAuthentication ? <Authentication /> : null}
                 <Chat />
 
