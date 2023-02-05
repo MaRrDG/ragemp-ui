@@ -1,8 +1,10 @@
 import { action, makeObservable, observable } from "mobx";
 import { merge } from "lodash";
+import { DeepPartial } from "../@types";
 
 export interface Player {
     showTimestamp: boolean;
+    isLogged: boolean;
 }
 
 export class PlayerStoreIMPL {
@@ -15,6 +17,7 @@ export class PlayerStoreIMPL {
     };
     player: Player = {
         showTimestamp: false,
+        isLogged: false,
     };
 
     constructor() {
@@ -49,7 +52,7 @@ export class PlayerStoreIMPL {
         this.version = version;
     }
 
-    updatePlayer(obj: Player) {
+    updatePlayer(obj: DeepPartial<Player>) {
         const newPlayer = merge(this.player, obj);
 
         this.player = newPlayer;

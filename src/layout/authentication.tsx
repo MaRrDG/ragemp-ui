@@ -36,6 +36,7 @@ const Authentication: FC<IProps> = inject("playerStore")(
             }
 
             playerStore?.setShowDisclaimer(true);
+            playerStore?.updatePlayer({ isLogged: true });
         };
 
         return (

@@ -35,7 +35,7 @@ const Chat: FC<IProps> = inject("playerStore")(
                 setMessages((prev) => [
                     ...prev,
                     {
-                        timestamp: `${dayjs().format("HH:mm:ss")}`,
+                        timestamp: `${dayjs().format("HH:mm")}`,
                         text: text,
                     },
                 ]);
@@ -125,9 +125,9 @@ const Chat: FC<IProps> = inject("playerStore")(
                     {messages.map((elem, idx) => (
                         <div key={idx} className="flex gap-1 direction-ltr ml-2 stroke">
                             {playerStore?.player.showTimestamp ? (
-                                <p className="font-medium">[{elem.timestamp}]</p>
+                                <p className="font-medium text-center text-gray-400 text-[17px]">{elem.timestamp}</p>
                             ) : null}
-                            <div dangerouslySetInnerHTML={{ __html: elem.text }} />
+                            <div dangerouslySetInnerHTML={{ __html: elem.text }} className="text-[15px]" />
                         </div>
                     ))}
 
