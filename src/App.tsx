@@ -6,6 +6,7 @@ import { inject, observer } from "mobx-react";
 import Chat from "./layout/chat";
 import { toast } from "react-toastify";
 import clsx from "clsx";
+import Hud from "./layout/hud";
 
 type IProps = {
     playerStore?: PlayerStoreIMPL;
@@ -44,6 +45,17 @@ const App: FC<IProps> = inject("playerStore")(
             RPC.on("brw:setServerVersion", ({ version }: { version: { serverVersion: string; uiVersion: string } }) => {
                 playerStore?.setVersion(version);
             });
+
+            RPC.on("brw:updateHud", ({ money, bankMoney }) => {
+                playerStore?.updatePlayer({
+                    money,
+                    bankMoney,
+                });
+            });
+
+            RPC.on("brw:updateOnlinePlayers", (players) => {
+                playerStore?.setTotalPlayers(players);
+            });
         }, [window.mp]);
 
         return (
@@ -54,6 +66,7 @@ const App: FC<IProps> = inject("playerStore")(
                 )}
             >
                 {playerStore?.showAuthentication ? <Authentication /> : null}
+                <Hud />
                 <Chat />
 
                 {playerStore?.showDisclaimer ? (

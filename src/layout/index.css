@@ -18,7 +18,7 @@
 }
 
 .chat-text-container::-webkit-scrollbar {
-    width: 0.5em;
+    width: 0.3em;
     height: 0.5em;
 }
 

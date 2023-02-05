@@ -125,9 +125,12 @@ const Chat: FC<IProps> = inject("playerStore")(
                     {messages.map((elem, idx) => (
                         <div key={idx} className="flex gap-1 direction-ltr ml-2 stroke">
                             {playerStore?.player.showTimestamp ? (
-                                <p className="font-medium text-center text-gray-400 text-[17px]">{elem.timestamp}</p>
+                                <p className="font-medium text-center text-indigo-500 text-[17px]">{elem.timestamp}</p>
                             ) : null}
-                            <div dangerouslySetInnerHTML={{ __html: elem.text }} className="text-[15px]" />
+                            <div
+                                dangerouslySetInnerHTML={{ __html: elem.text }}
+                                className="text-[15px] text-center mt-auto mb-auto"
+                            />
                         </div>
                     ))}
 

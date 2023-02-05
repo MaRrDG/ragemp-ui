@@ -5,12 +5,16 @@ import { DeepPartial } from "../@types";
 export interface Player {
     showTimestamp: boolean;
     isLogged: boolean;
+    money: number;
+    bankMoney: number;
+    id: number;
 }
 
 export class PlayerStoreIMPL {
     showAuthentication: boolean = false;
     haveInterfaceOpen: boolean = false;
     showDisclaimer: boolean = false;
+    totalPlayers: number = 0;
     version = {
         serverVersion: "0.0.1",
         uiVersion: "0.0.1",
@@ -18,6 +22,9 @@ export class PlayerStoreIMPL {
     player: Player = {
         showTimestamp: false,
         isLogged: false,
+        money: 0,
+        bankMoney: 0,
+        id: 0,
     };
 
     constructor() {
@@ -27,7 +34,9 @@ export class PlayerStoreIMPL {
             player: observable,
             showDisclaimer: observable,
             version: observable,
+            totalPlayers: observable,
 
+            setTotalPlayers: action,
             setShowAuthentication: action,
             setHaveInterfaceOpen: action,
             updatePlayer: action,
@@ -50,6 +59,10 @@ export class PlayerStoreIMPL {
 
     setVersion(version: { serverVersion: string; uiVersion: string }) {
         this.version = version;
+    }
+
+    setTotalPlayers(players: number) {
+        this.totalPlayers = players;
     }
 
     updatePlayer(obj: DeepPartial<Player>) {
