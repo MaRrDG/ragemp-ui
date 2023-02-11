@@ -5,22 +5,40 @@ import { DeepPartial } from "../@types";
 export interface Player {
     showTimestamp: boolean;
     isLogged: boolean;
+    showHud: boolean;
+    showChat: boolean;
     money: number;
     bankMoney: number;
     id: number;
+}
+
+export interface Paycheck {
+    showPayCheck: boolean;
+    money: number;
+    experience: number;
+    minutes: number;
+    seconds: number;
 }
 
 export class PlayerStoreIMPL {
     showAuthentication: boolean = false;
     haveInterfaceOpen: boolean = false;
     showDisclaimer: boolean = false;
-    totalPlayers: number = 0;
     version = {
         serverVersion: "0.0.1",
         uiVersion: "0.0.1",
     };
+    payCheck: Paycheck = {
+        showPayCheck: false,
+        money: 0,
+        experience: 0,
+        minutes: 60,
+        seconds: 60,
+    };
     player: Player = {
         showTimestamp: false,
+        showHud: true,
+        showChat: true,
         isLogged: false,
         money: 0,
         bankMoney: 0,
@@ -34,18 +52,22 @@ export class PlayerStoreIMPL {
             player: observable,
             showDisclaimer: observable,
             version: observable,
-            totalPlayers: observable,
+            payCheck: observable,
 
-            setTotalPlayers: action,
             setShowAuthentication: action,
-            setHaveInterfaceOpen: action,
             updatePlayer: action,
+            setHaveInterfaceOpen: action,
             setShowDisclaimer: action,
+            setPayCheck: action,
         });
     }
 
     setShowDisclaimer(bool: boolean) {
         this.showDisclaimer = bool;
+    }
+
+    setPayCheck(data: DeepPartial<Paycheck>) {
+        this.payCheck = merge(this.payCheck, data);
     }
 
     setShowAuthentication(bool: boolean) {
@@ -61,12 +83,8 @@ export class PlayerStoreIMPL {
         this.version = version;
     }
 
-    setTotalPlayers(players: number) {
-        this.totalPlayers = players;
-    }
-
-    updatePlayer(obj: DeepPartial<Player>) {
-        const newPlayer = merge(this.player, obj);
+    updatePlayer(data: DeepPartial<Player>) {
+        const newPlayer = merge(this.player, data);
 
         this.player = newPlayer;
     }

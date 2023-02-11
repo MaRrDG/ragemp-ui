@@ -5,6 +5,13 @@
     transform: translate(-50%, -50%);
 }
 
+.div2 {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background-color: #ac5;
+  }
+
 .direction-rtl {
     direction: rtl;
 }
@@ -34,4 +41,27 @@
 
 .chat-text-container::-webkit-scrollbar-thumb:hover{
     background: linear-gradient(180deg, rgba(99,102,241,1) 0%, rgba(67,56,202,1) 100%);
+}
+
+.paycheck-animation {
+    animation-name:  left-to-right;
+    animation-duration: 15s;
+}
+
+@keyframes left-to-right {
+    0% {
+        left: -50%;
+    }   
+
+    30% {
+        left: -8px;
+    }
+
+    50% {
+        left: -8px;
+    }
+
+    100% {
+        left: -50%;
+    }
 }

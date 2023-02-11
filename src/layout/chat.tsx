@@ -77,7 +77,7 @@ const Chat: FC<IProps> = inject("playerStore")(
         const onKeyDownListener = (event: any) => {
             // T KEY
             if (event.keyCode === 84) {
-                if (playerStore?.haveInterfaceOpen || inputRef.current) return;
+                if (playerStore?.haveInterfaceOpen || inputRef.current || !showChat) return;
                 chatInvoke(true);
                 setShowTextInput(true);
                 inputRef.current = true;
@@ -112,6 +112,10 @@ const Chat: FC<IProps> = inject("playerStore")(
                 chatInput?.focus();
             }
         }, [showTextInput]);
+
+        useEffect(() => {
+            setShowChat(playerStore!.player.showChat);
+        }, [playerStore?.player]);
 
         if (!showChat || playerStore?.haveInterfaceOpen) return null;
         return (
@@ -186,32 +190,6 @@ const Chat: FC<IProps> = inject("playerStore")(
                                 }}
                             />
                             <p className="absolute right-2 top-4">{currentMessage.length}/160</p>
-                        </div>
-                        <div className="flex gap-x-1">
-                            <button
-                                type="button"
-                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase flex items-center justify-center h-8 rounded-md"
-                            >
-                                <Cog6ToothIcon className="w-6" />
-                            </button>
-                            <button
-                                type="button"
-                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase font-medium flex items-center justify-center h-8 rounded-md"
-                            >
-                                Normal
-                            </button>
-                            <button
-                                type="button"
-                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase font-medium flex items-center justify-center h-8 rounded-md"
-                            >
-                                Staff
-                            </button>
-                            <button
-                                type="button"
-                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase font-medium flex items-center justify-center h-8 rounded-md"
-                            >
-                                Faction
-                            </button>
                         </div>
                     </div>
                 ) : null}

@@ -1,9 +1,7 @@
 import React, { FC } from "react";
 import { Clock } from "../assets/icons/clock";
-import { UserIcon } from "@heroicons/react/24/solid";
+import { UserIcon, BanknotesIcon } from "@heroicons/react/24/solid";
 import { Star } from "../assets/icons/starts";
-import { Circles } from "../assets/icons/circles";
-import { Ammo } from "../assets/icons/ammo";
 import { inject, observer } from "mobx-react";
 import { PlayerStoreIMPL } from "../stores/PlayerStore";
 import dayjs from "dayjs";
@@ -14,7 +12,7 @@ type IProps = {
 
 const Hud: FC<IProps> = inject("playerStore")(
     observer(({ playerStore }: IProps) => {
-        if (playerStore?.haveInterfaceOpen) return null;
+        if (playerStore?.haveInterfaceOpen || !playerStore?.player.showHud) return null;
 
         return (
             <div className="absolute flex gap-[6px] right-[19px]">
@@ -33,12 +31,6 @@ const Hud: FC<IProps> = inject("playerStore")(
                                 #{playerStore?.player.id}
                             </span>
                         </div>
-                        <div className="flex items-center justify-center gap-x-1">
-                            <Circles />
-                            <span className="mt-[0.5px] font-bayon text-[16px] text-white">
-                                {playerStore?.totalPlayers}
-                            </span>
-                        </div>
                     </div>
                     <span className="font-bayon text-white text-[24px] h-8 text-right">
                         ${playerStore?.player.money.toLocaleString()}
@@ -46,10 +38,18 @@ const Hud: FC<IProps> = inject("playerStore")(
                     <span className="font-bayon text-indigo-500/70 text-[18px] text-right">
                         ${playerStore?.player.bankMoney.toLocaleString()}
                     </span>
-                    {/* <div className="flex mt-1 ml-auto w-[80px] h-[31px] text-indigo-500/20 border-[2px] border-solid border-white rounded-[10px] items-center justify-center font-bayon text-white">
-                        <Ammo />
-                        <span className="ml-[6px] text-white">232</span>
-                    </div> */}
+                    <div className="flex mt-1 ml-auto w-[80px] h-[31px] text-indigo-500/20 border-[2px] border-solid border-white rounded-[10px] items-center justify-center font-bayon text-white">
+                        <BanknotesIcon className="text-indigo-500 w-[1rem]" />
+                        <span className="ml-[6px] text-white">
+                            {playerStore?.payCheck.minutes < 10
+                                ? `0${playerStore?.payCheck.minutes}`
+                                : playerStore?.payCheck.minutes}
+                            :
+                            {playerStore?.payCheck.seconds < 10
+                                ? `0${playerStore?.payCheck.seconds}`
+                                : playerStore?.payCheck.seconds}
+                        </span>
+                    </div>
                 </div>
                 <div>
                     <div className="flex flex-col items-end justify-end">
