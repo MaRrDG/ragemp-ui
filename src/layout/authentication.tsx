@@ -102,8 +102,8 @@ const Authentication: FC<IProps> = inject("playerStore")(
 
                                     <img src="/images/login-wave.png" className="absolute z-0" alt="Character" />
                                     <div className="absolute bottom-[5px] right-2 text-right font-bellota text-white text-[12px]">
-                                        <p>UI VERSION: 0.0.1</p>
-                                        <p>SERVER VERSION: 0.0.1</p>
+                                        <p>UI VERSION: {playerStore?.version.uiVersion}</p>
+                                        <p>SERVER VERSION: {playerStore?.version.serverVersion}</p>
                                     </div>
                                 </>
                             ) : (
@@ -175,8 +175,8 @@ const Authentication: FC<IProps> = inject("playerStore")(
                                         alt="Character"
                                     />
                                     <div className="absolute bottom-[5px] left-2 text-left font-bellota text-white text-[12px]">
-                                        <p>UI VERSION: 0.0.1</p>
-                                        <p>SERVER VERSION: 0.0.1</p>
+                                        <p>UI VERSION: {playerStore?.version.uiVersion}</p>
+                                        <p>SERVER VERSION: {playerStore?.version.serverVersion}</p>
                                     </div>
                                 </>
                             )}

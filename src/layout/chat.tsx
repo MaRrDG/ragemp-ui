@@ -77,7 +77,7 @@ const Chat: FC<IProps> = inject("playerStore")(
         const onKeyDownListener = (event: any) => {
             // T KEY
             if (event.keyCode === 84) {
-                if (playerStore?.haveInterfaceOpen || inputRef.current) return;
+                if (playerStore?.haveInterfaceOpen || inputRef.current || !showChat) return;
                 chatInvoke(true);
                 setShowTextInput(true);
                 inputRef.current = true;
@@ -113,6 +113,10 @@ const Chat: FC<IProps> = inject("playerStore")(
             }
         }, [showTextInput]);
 
+        useEffect(() => {
+            setShowChat(playerStore!.player.showChat);
+        }, [playerStore?.player]);
+
         if (!showChat || playerStore?.haveInterfaceOpen) return null;
         return (
             <div className="w-[37em] chat text-white font-sans">
@@ -125,9 +129,12 @@ const Chat: FC<IProps> = inject("playerStore")(
                     {messages.map((elem, idx) => (
                         <div key={idx} className="flex gap-1 direction-ltr ml-2 stroke">
                             {playerStore?.player.showTimestamp ? (
-                                <p className="font-medium text-center text-gray-400 text-[17px]">{elem.timestamp}</p>
+                                <p className="font-medium text-center text-indigo-500 text-[17px]">{elem.timestamp}</p>
                             ) : null}
-                            <div dangerouslySetInnerHTML={{ __html: elem.text }} className="text-[15px]" />
+                            <div
+                                dangerouslySetInnerHTML={{ __html: elem.text }}
+                                className="text-[15px] text-center mt-auto mb-auto"
+                            />
                         </div>
                     ))}
 
@@ -183,32 +190,6 @@ const Chat: FC<IProps> = inject("playerStore")(
                                 }}
                             />
                             <p className="absolute right-2 top-4">{currentMessage.length}/160</p>
-                        </div>
-                        <div className="flex gap-x-1">
-                            <button
-                                type="button"
-                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase flex items-center justify-center h-8 rounded-md"
-                            >
-                                <Cog6ToothIcon className="w-6" />
-                            </button>
-                            <button
-                                type="button"
-                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase font-medium flex items-center justify-center h-8 rounded-md"
-                            >
-                                Normal
-                            </button>
-                            <button
-                                type="button"
-                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase font-medium flex items-center justify-center h-8 rounded-md"
-                            >
-                                Staff
-                            </button>
-                            <button
-                                type="button"
-                                className="bg-indigo-500 hover:bg-gradient-to-r hover:from-indigo-500  hover:to-indigo-700 p-2 uppercase font-medium flex items-center justify-center h-8 rounded-md"
-                            >
-                                Faction
-                            </button>
                         </div>
                     </div>
                 ) : null}
