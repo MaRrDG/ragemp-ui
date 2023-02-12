@@ -7,7 +7,6 @@ export type DeepPartial<T> = T extends object
     : T;
 
 export interface IPaycheck {
-    showPayCheck: boolean;
     money: number;
     experience: number;
     minutes: number;
@@ -19,14 +18,25 @@ export interface IVersion {
     uiVersion: string;
 }
 
+export interface IStats {
+    admin: number;
+    helper: number;
+    money: number;
+    bankMoney: number;
+    level: number;
+    hoursPlayed: number;
+    points: {
+        experience: number;
+    };
+}
+
 export interface IPlayer {
     showTimestamp: boolean;
     isLogged: boolean;
     showHud: boolean;
     showChat: boolean;
-    money: number;
-    bankMoney: number;
     id: number;
-    payCheck: Paycheck;
+    showAlert: boolean;
     version: IVersion;
+    stats: IStats;
 }

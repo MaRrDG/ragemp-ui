@@ -133,7 +133,7 @@ const Chat: FC<IProps> = inject("playerStore")(
                             ) : null}
                             <div
                                 dangerouslySetInnerHTML={{ __html: elem.text }}
-                                className="text-[15px] text-center mt-auto mb-auto"
+                                className="text-[15px] mt-auto mb-auto"
                             />
                         </div>
                     ))}

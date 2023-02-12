@@ -6,21 +6,26 @@ export class PlayerStoreIMPL {
     showAuthentication: boolean = false;
     haveInterfaceOpen: boolean = false;
     showDisclaimer: boolean = false;
+    showPayCheck: boolean = false;
+    showExperienceNeed: boolean = false;
 
     info: IPlayer = {
         showTimestamp: false,
         showHud: true,
         showChat: true,
         isLogged: false,
-        money: 0,
-        bankMoney: 0,
         id: 0,
-        payCheck: {
-            showPayCheck: false,
+        showAlert: false,
+        stats: {
+            admin: 0,
+            helper: 0,
             money: 0,
-            experience: 0,
-            minutes: 60,
-            seconds: 60,
+            bankMoney: 0,
+            level: 0,
+            hoursPlayed: 0,
+            points: {
+                experience: 0,
+            },
         },
         version: {
             serverVersion: "0.0.1",
@@ -34,12 +39,24 @@ export class PlayerStoreIMPL {
             haveInterfaceOpen: observable,
             info: observable,
             showDisclaimer: observable,
+            showPayCheck: observable,
+            showExperienceNeed: observable,
 
+            setShowExperienceNeed: action,
+            setShowPayCheck: action,
             setShowAuthentication: action,
             updatePlayerInfo: action,
             setHaveInterfaceOpen: action,
             setShowDisclaimer: action,
         });
+    }
+
+    setShowExperienceNeed(bool: boolean) {
+        this.showExperienceNeed = bool;
+    }
+
+    setShowPayCheck(bool: boolean) {
+        this.showPayCheck = bool;
     }
 
     setShowDisclaimer(bool: boolean) {

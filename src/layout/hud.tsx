@@ -5,13 +5,18 @@ import { Star } from "../assets/icons/starts";
 import { inject, observer } from "mobx-react";
 import { PlayerStoreIMPL } from "../stores/PlayerStore";
 import dayjs from "dayjs";
+import { PayCheckStoreIMPL } from "../stores/PayCheckStore";
 
 type IProps = {
     playerStore?: PlayerStoreIMPL;
+    payCheckStore?: PayCheckStoreIMPL;
 };
 
-const Hud: FC<IProps> = inject("playerStore")(
-    observer(({ playerStore }: IProps) => {
+const Hud: FC<IProps> = inject(
+    "playerStore",
+    "payCheckStore"
+)(
+    observer(({ playerStore, payCheckStore }: IProps) => {
         if (playerStore?.haveInterfaceOpen || !playerStore?.info.showHud) return null;
 
         return (
@@ -33,21 +38,21 @@ const Hud: FC<IProps> = inject("playerStore")(
                         </div>
                     </div>
                     <span className="font-bayon text-white text-[24px] h-8 text-right">
-                        ${playerStore?.info.money.toLocaleString()}
+                        ${playerStore?.info.stats.money.toLocaleString()}
                     </span>
                     <span className="font-bayon text-indigo-500/70 text-[18px] text-right">
-                        ${playerStore?.info.bankMoney.toLocaleString()}
+                        ${playerStore?.info.stats.bankMoney.toLocaleString()}
                     </span>
                     <div className="flex mt-1 ml-auto w-[80px] h-[31px] text-indigo-500/20 border-[2px] border-solid border-white rounded-[10px] items-center justify-center font-bayon text-white">
                         <BanknotesIcon className="text-indigo-500 w-[1rem]" />
                         <span className="ml-[6px] text-white">
-                            {playerStore?.info.payCheck.minutes < 10
-                                ? `0${playerStore?.info.payCheck.minutes}`
-                                : playerStore?.info.payCheck.minutes}
+                            {payCheckStore!.payCheck.minutes < 10
+                                ? `0${payCheckStore?.payCheck.minutes}`
+                                : payCheckStore?.payCheck.minutes}
                             :
-                            {playerStore?.info.payCheck.seconds < 10
-                                ? `0${playerStore?.info.payCheck.seconds}`
-                                : playerStore?.info.payCheck.seconds}
+                            {payCheckStore!.payCheck.seconds < 10
+                                ? `0${payCheckStore?.payCheck.seconds}`
+                                : payCheckStore?.payCheck.seconds}
                         </span>
                     </div>
                 </div>
