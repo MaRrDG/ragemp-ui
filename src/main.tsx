@@ -16,9 +16,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <MobxProvider {...stores}>
         <ToastContainer
             position="bottom-right"
-            theme="light"
-            autoClose={5000}
-            hideProgressBar={false}
             newestOnTop={false}
             closeOnClick
             rtl={false}

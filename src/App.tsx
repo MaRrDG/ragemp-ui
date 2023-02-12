@@ -20,14 +20,11 @@ const App: FC<IProps> = inject("playerStore")(
 
         return (
             <div
-                className={clsx(
-                    "w-screen h-screen p-2 relative",
-                    !playerStore?.player.isLogged ? "bg-[#080813]/70" : ""
-                )}
+                className={clsx("w-screen h-screen p-2 relative", !playerStore?.info.isLogged ? "bg-[#080813]/70" : "")}
             >
                 {playerStore?.showAuthentication ? <Authentication /> : null}
                 <Hud />
-                {playerStore?.payCheck.showPayCheck ? <PayCheck /> : null}
+                {playerStore?.info.payCheck.showPayCheck ? <PayCheck /> : null}
                 <Chat />
 
                 {playerStore?.showDisclaimer ? (

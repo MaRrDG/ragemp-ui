@@ -1,6 +1,7 @@
-import { Paycheck, Player, PlayerStoreIMPL } from "../stores/PlayerStore";
+import { PlayerStoreIMPL } from "../stores/PlayerStore";
 import * as RPC from "rage-rpc";
 import { toast } from "react-toastify";
+import { IPaycheck, IPlayer } from "../@types";
 
 export const allRpc = (playerStore: PlayerStoreIMPL) => {
     RPC.on("brw:showAuthentication", (bool: boolean) => {
@@ -26,27 +27,31 @@ export const allRpc = (playerStore: PlayerStoreIMPL) => {
         }
     );
 
-    RPC.on("brw:loadPlayerInfos", ({ player }: { player: Player }) => {
-        playerStore?.updatePlayer(player);
+    RPC.on("brw:loadPlayerInfos", ({ player }: { player: IPlayer }) => {
+        playerStore?.updatePlayerInfo(player);
     });
 
     RPC.on("brw:setServerVersion", ({ version }: { version: { serverVersion: string; uiVersion: string } }) => {
-        playerStore?.setVersion(version);
+        playerStore?.updatePlayerInfo({ version });
     });
 
     RPC.on("brw:updateHud", ({ money, bankMoney }) => {
-        playerStore?.updatePlayer({
+        playerStore?.updatePlayerInfo({
             money,
             bankMoney,
         });
     });
 
-    RPC.on("brw:updatePayCheck", (data: Paycheck) => {
+    RPC.on("brw:updatePayCheck", (data: IPaycheck) => {
         if (data.experience) {
-            playerStore?.setPayCheck({
-                showPayCheck: true,
+            playerStore?.updatePlayerInfo({
+                payCheck: {
+                    showPayCheck: true,
+                },
             });
         }
-        playerStore?.setPayCheck(data);
+        playerStore?.updatePlayerInfo({
+            payCheck: data,
+        });
     });
 };

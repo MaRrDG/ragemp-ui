@@ -45,7 +45,7 @@
 
 .paycheck-animation {
     animation-name:  left-to-right;
-    animation-duration: 15s;
+    animation-duration: 10s;
 }
 
 @keyframes left-to-right {
@@ -53,11 +53,11 @@
         left: -50%;
     }   
 
-    30% {
+    20% {
         left: -8px;
     }
 
-    50% {
+    80% {
         left: -8px;
     }
 

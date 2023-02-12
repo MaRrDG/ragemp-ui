@@ -36,7 +36,7 @@ const Authentication: FC<IProps> = inject("playerStore")(
             }
 
             playerStore?.setShowDisclaimer(true);
-            playerStore?.updatePlayer({ isLogged: true });
+            playerStore?.updatePlayerInfo({ isLogged: true });
         };
 
         return (
@@ -102,8 +102,8 @@ const Authentication: FC<IProps> = inject("playerStore")(
 
                                     <img src="/images/login-wave.png" className="absolute z-0" alt="Character" />
                                     <div className="absolute bottom-[5px] right-2 text-right font-bellota text-white text-[12px]">
-                                        <p>UI VERSION: {playerStore?.version.uiVersion}</p>
-                                        <p>SERVER VERSION: {playerStore?.version.serverVersion}</p>
+                                        <p>UI VERSION: {playerStore?.info.version.uiVersion}</p>
+                                        <p>SERVER VERSION: {playerStore?.info.version.serverVersion}</p>
                                     </div>
                                 </>
                             ) : (
@@ -175,8 +175,8 @@ const Authentication: FC<IProps> = inject("playerStore")(
                                         alt="Character"
                                     />
                                     <div className="absolute bottom-[5px] left-2 text-left font-bellota text-white text-[12px]">
-                                        <p>UI VERSION: {playerStore?.version.uiVersion}</p>
-                                        <p>SERVER VERSION: {playerStore?.version.serverVersion}</p>
+                                        <p>UI VERSION: {playerStore?.info.version.uiVersion}</p>
+                                        <p>SERVER VERSION: {playerStore?.info.version.serverVersion}</p>
                                     </div>
                                 </>
                             )}

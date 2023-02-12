@@ -114,8 +114,8 @@ const Chat: FC<IProps> = inject("playerStore")(
         }, [showTextInput]);
 
         useEffect(() => {
-            setShowChat(playerStore!.player.showChat);
-        }, [playerStore?.player]);
+            setShowChat(playerStore!.info.showChat);
+        }, [playerStore?.info]);
 
         if (!showChat || playerStore?.haveInterfaceOpen) return null;
         return (
@@ -128,7 +128,7 @@ const Chat: FC<IProps> = inject("playerStore")(
                 >
                     {messages.map((elem, idx) => (
                         <div key={idx} className="flex gap-1 direction-ltr ml-2 stroke">
-                            {playerStore?.player.showTimestamp ? (
+                            {playerStore?.info.showTimestamp ? (
                                 <p className="font-medium text-center text-indigo-500 text-[17px]">{elem.timestamp}</p>
                             ) : null}
                             <div
