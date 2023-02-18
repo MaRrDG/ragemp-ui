@@ -5,14 +5,19 @@ import { Star } from "../assets/icons/starts";
 import { inject, observer } from "mobx-react";
 import { PlayerStoreIMPL } from "../stores/PlayerStore";
 import dayjs from "dayjs";
+import { PayCheckStoreIMPL } from "../stores/PayCheckStore";
 
 type IProps = {
     playerStore?: PlayerStoreIMPL;
+    payCheckStore?: PayCheckStoreIMPL;
 };
 
-const Hud: FC<IProps> = inject("playerStore")(
-    observer(({ playerStore }: IProps) => {
-        if (playerStore?.haveInterfaceOpen || !playerStore?.player.showHud) return null;
+const Hud: FC<IProps> = inject(
+    "playerStore",
+    "payCheckStore"
+)(
+    observer(({ playerStore, payCheckStore }: IProps) => {
+        if (playerStore?.haveInterfaceOpen || !playerStore?.info.showHud) return null;
 
         return (
             <div className="absolute flex gap-[6px] right-[19px]">
@@ -28,26 +33,26 @@ const Hud: FC<IProps> = inject("playerStore")(
                         <div className="flex items-center justify-center gap-x-1">
                             <UserIcon width="16" className="text-white" />
                             <span className="mt-[0.5px] font-bayon text-[16px] text-white">
-                                #{playerStore?.player.id}
+                                #{playerStore?.info.id}
                             </span>
                         </div>
                     </div>
                     <span className="font-bayon text-white text-[24px] h-8 text-right">
-                        ${playerStore?.player.money.toLocaleString()}
+                        ${playerStore?.info.stats.money.toLocaleString()}
                     </span>
                     <span className="font-bayon text-indigo-500/70 text-[18px] text-right">
-                        ${playerStore?.player.bankMoney.toLocaleString()}
+                        ${playerStore?.info.stats.bankMoney.toLocaleString()}
                     </span>
                     <div className="flex mt-1 ml-auto w-[80px] h-[31px] text-indigo-500/20 border-[2px] border-solid border-white rounded-[10px] items-center justify-center font-bayon text-white">
                         <BanknotesIcon className="text-indigo-500 w-[1rem]" />
                         <span className="ml-[6px] text-white">
-                            {playerStore?.payCheck.minutes < 10
-                                ? `0${playerStore?.payCheck.minutes}`
-                                : playerStore?.payCheck.minutes}
+                            {payCheckStore!.payCheck.minutes < 10
+                                ? `0${payCheckStore?.payCheck.minutes}`
+                                : payCheckStore?.payCheck.minutes}
                             :
-                            {playerStore?.payCheck.seconds < 10
-                                ? `0${playerStore?.payCheck.seconds}`
-                                : playerStore?.payCheck.seconds}
+                            {payCheckStore!.payCheck.seconds < 10
+                                ? `0${payCheckStore?.payCheck.seconds}`
+                                : payCheckStore?.payCheck.seconds}
                         </span>
                     </div>
                 </div>

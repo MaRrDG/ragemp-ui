@@ -6,28 +6,30 @@ import Chat from "./layout/chat";
 import clsx from "clsx";
 import Hud from "./layout/hud";
 import { allRpc } from "./rpc";
-import PayCheck from "./layout/payCheck";
+import Alerts from "./layout/Alerts";
+import { PayCheckStoreIMPL } from "./stores/PayCheckStore";
 
 type IProps = {
     playerStore?: PlayerStoreIMPL;
+    payCheckStore?: PayCheckStoreIMPL;
 };
 
-const App: FC<IProps> = inject("playerStore")(
-    observer(({ playerStore }: IProps) => {
+const App: FC<IProps> = inject(
+    "playerStore",
+    "payCheckStore"
+)(
+    observer(({ playerStore, payCheckStore }: IProps) => {
         useEffect(() => {
-            allRpc(playerStore!);
+            allRpc(playerStore!, payCheckStore!);
         }, [window.mp]);
 
         return (
             <div
-                className={clsx(
-                    "w-screen h-screen p-2 relative",
-                    !playerStore?.player.isLogged ? "bg-[#080813]/70" : ""
-                )}
+                className={clsx("w-screen h-screen p-2 relative", !playerStore?.info.isLogged ? "bg-[#080813]/70" : "")}
             >
                 {playerStore?.showAuthentication ? <Authentication /> : null}
                 <Hud />
-                {playerStore?.payCheck.showPayCheck ? <PayCheck /> : null}
+                <Alerts />
                 <Chat />
 
                 {playerStore?.showDisclaimer ? (
